@@ -31,18 +31,25 @@ describe('Insight', function() {
       insight.network.should.equal(Networks.testnet);
     });
     it('can be created with a custom url', function() {
-      var url = 'https://localhost:1234';
+      var url = 'https://localhost:1234/insight-api/';
       var insight = new Insight(url);
       insight.url.should.equal(url);
     });
+    it('can be created with a custom url that misses ending slash', function() {
+          var url = 'https://localhost:1234/insight-api';
+          var updatedUrl = url + '/';
+          var insight = new Insight(url, Networks.testnet);
+          insight.url.should.equal(updatedUrl);
+          insight.network.should.equal(Networks.testnet);
+    });
     it('can be created with a custom url and network', function() {
-      var url = 'https://localhost:1234';
+      var url = 'https://localhost:1234/insight-api/';
       var insight = new Insight(url, Networks.testnet);
       insight.url.should.equal(url);
       insight.network.should.equal(Networks.testnet);
     });
     it('defaults to defaultNetwork on a custom url', function() {
-      var insight = new Insight('https://localhost:1234');
+      var insight = new Insight('https://localhost:1234/insight-api/');
       insight.network.should.equal(Networks.defaultNetwork);
     });
   });
