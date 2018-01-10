@@ -1,7 +1,7 @@
 {
-  "name": "bitcore-explorers",
+  "name": "bitcore-explorers-ws",
   "version": "1.0.1",
-  "description": "Module to query blockchain apis for Bitcore.",
+  "description": "BitPay' module to query blockchain apis for Bitcore extended with websockets iface.",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -12,22 +12,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bitpay/bitcore-explorers.git"
+    "url": "https://github.com/vkonst/bitcore-explorers-ws.git"
   },
   "keywords": [
     "bitcoin",
     "bitcore",
     "insight"
   ],
-  "author": "BitPay",
+  "author": "BitPay, forked by vadim.konstantinov@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bitpay/bitcore-explorers/issues"
+    "url": "https://github.com/vkonst/bitcore-explorers-ws/issues"
   },
   "browser": {
     "request": "browser-request"
   },
-  "homepage": "https://github.com/bitpay/bitcore-explorers",
+  "homepage": "https://github.com/vkonst/bitcore-explorers-ws",
   "devDependencies": {
     "bitcore-build": "git://github.com/bitpay/bitcore-build.git",
     "brfs": "^1.2.0",

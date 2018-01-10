@@ -20,14 +20,14 @@ describe('Insight', function() {
       should.exist(insight.url);
       should.exist(insight.network);
       if (insight.network === Networks.livenet) {
-        insight.url.should.equal('https://insight.bitpay.com');
+        insight.url.should.equal('https://insight.bitpay.com/api/');
       } else if (insight.network === Networks.testnet) {
-        insight.url.should.equal('https://test-insight.bitpay.com');
+        insight.url.should.equal('https://test-insight.bitpay.com/api/');
       }
     });
     it('can be created providing just a network', function() {
       var insight = new Insight(Networks.testnet);
-      insight.url.should.equal('https://test-insight.bitpay.com');
+      insight.url.should.equal('https://test-insight.bitpay.com/api/');
       insight.network.should.equal(Networks.testnet);
     });
     it('can be created with a custom url', function() {
