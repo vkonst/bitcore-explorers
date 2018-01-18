@@ -21,23 +21,18 @@ const subscribeOpts = {newBlock: true, tx: false};
 
 var newInsight = new InsightWs(serverURL, Networks.testnet, serverInsightPrefix);
 
-newInsight.connect(subscribeOpts).then(
-    () => {
-        // ...
-    },
-    (err) => {
-        console.log("WebSocket connection error: ", err);
+newInsight.connect({newBlock: true, tx: true}).catch(function (err) {
+    console.log("Connection error: ", err);
 });
 
-newInsight.events.on("insightWs:connected", () => {
-    console.log("insightWs:connected")
+newInsight.events.on('insightWs:connected', function (data) {
+    console.log("insightWs is connected to socket server", data);
 });
 
-newInsight.events.on("insightWs:newBlock", data => {
-    console.log(data);
+newInsight.events.on('insightWs:newTx', function (newTx) {
+    console.log("New transaction receive: ", newTx);
 });
 
-
-
-
-
+newInsight.events.on('insightWs:newBlock', function (newBlock) {
+    console.log("New block receive: ", newBlock);
+});
