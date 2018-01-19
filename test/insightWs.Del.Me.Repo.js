@@ -17,11 +17,11 @@ var Networks = bitcore.Networks;
 const serverURL = 'http://127.0.0.1:8080/';
 const serverInsightPrefix = 'insight/';
 
-const subscribeOpts = {newBlock: true, tx: false};
+const subscribeOpts = {block: true, tx: true};
 
 var newInsight = new InsightWs(serverURL, Networks.testnet, serverInsightPrefix);
 
-newInsight.connect({block: true, tx: true});
+newInsight.connect(subscribeOpts);
 
 newInsight.events.on('insightWs:connected', function () {
     console.log("insightWs is connected to socket server");
@@ -33,8 +33,8 @@ newInsight.events.on('insightWs:newTx', function (newTx) {
     console.log("New transaction vout: ", newTx.vout.toString());
 });
 
-newInsight.events.on('insightWs:newBlockHash', function (blockHash) {
-    console.log("New block receive: ", blockHash);
+newInsight.events.on('insightWs:newBlockHash', function (block) {
+    console.log("New block receive: ", block);
 });
 
 newInsight.events.on('insightWs:disconnected', function (data) {
