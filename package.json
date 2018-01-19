@@ -39,6 +39,7 @@
   "dependencies": {
     "bitcore-lib": "^0.13.14",
     "browser-request": "^0.3.3",
+    "debug": "^3.1.0",
     "request": "^2.51.0"
   }
 }
