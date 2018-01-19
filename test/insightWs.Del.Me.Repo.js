@@ -30,7 +30,6 @@ newInsight.events.on('insightWs:connected', function () {
 
 newInsight.events.on('insightWs:newTx', function (newTx) {
     console.log("New transaction receive: ", newTx);
-    console.log("New transaction vout: ", newTx.vout.toString());
 });
 
 newInsight.events.on('insightWs:newBlockHash', function (block) {
