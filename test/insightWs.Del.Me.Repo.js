@@ -28,12 +28,16 @@ newInsight.events.on('insightWs:connected', function () {
 });
 
 
-newInsight.events.on('insightWs:newTx', function (newTx) {
-    console.log("New transaction receive: ", newTx);
-});
+// newInsight.events.on('insightWs:newTx', function (newTx) {
+//     console.log("New transaction receive: ", newTx);
+// });
 
-newInsight.events.on('insightWs:newBlockHash', function (block) {
-    console.log("New block receive: ", block);
+// newInsight.events.on('insightWs:newBlockHash', function (block) {
+//     console.log("New block receive: ", block);
+// });
+
+newInsight.events.on('insightWs:vout', function (amount_array) {
+    console.log("Amount array: ", amount_array);
 });
 
 newInsight.events.on('insightWs:disconnected', function (data) {
