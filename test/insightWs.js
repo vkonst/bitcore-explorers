@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 var sinon = require('sinon');
 var should = require('chai').should();
@@ -20,17 +20,17 @@ describe('InsightWs', function () {
             should.exist(insightWs.url);
             should.exist(insightWs.network);
             if (insightWs.network === Networks.livenet) {
-                insightWs.url.should.equal('https://insight.bitpay.com/api/');
+                insightWs.url.should.equal('https://insight.bitpay.com/insight-api/');
                 insightWs.wsUrl.should.equal('https://insight.bitpay.com');
             } else if (insightWs.network === Networks.testnet) {
-                insightWs.url.should.equal('https://test-insight.bitpay.com/api/');
+                insightWs.url.should.equal('https://test-insight.bitpay.com/insight-api/');
                 insightWs.wsUrl.should.equal('https://test-insight.bitpay.com');
             }
         });
         it('can be created providing just a network', function() {
             var insightWs = new InsightWs(Networks.testnet);
-            insightWs.url.should.equal('https://test-insight.bitpay.com/api/');
-            insightWs.wsUrl.should.equal('https://test-insight.bitpay.com');
+            insightWs.url.should.equal('https://test-insight.bitpay.com/insight-api/');
+            insightWs.wsUrl.should.equal('https://test-insight.bitpay.com/');
             insightWs.network.should.equal(Networks.testnet);
         });
         it('can be created with a custom serverUrl without network and prefix', function() {
@@ -74,6 +74,35 @@ describe('InsightWs', function () {
             var insightWs = new InsightWs(serverUrl);
             var urlWithPrefix = serverUrl + 'insight-api/';
             insightWs.url.should.equal(urlWithPrefix);
+        });
+    });
+
+    describe('subscriptions', function () {
+        it('can call connect method without subscriptions', function () {
+            var insightWs = new InsightWs();
+            insightWs.connect();
+            insightWs.subscriptions.tx.should.equal(false);
+            insightWs.subscriptions.block.should.equal(true);
+        });
+        it('can call connect method with custom subscriptions', function () {
+            var insightWs = new InsightWs();
+
+            var subscriptions = {block: false, tx: true};
+            insightWs.connect(subscriptions);
+            insightWs.subscriptions.tx.should.equal(true);
+            insightWs.subscriptions.block.should.equal(false);
+
+            insightWs = new InsightWs();
+            subscriptions.block = true;
+            insightWs.connect(subscriptions);
+            insightWs.subscriptions.tx.should.equal(true);
+            insightWs.subscriptions.block.should.equal(true);
+
+            insightWs = new InsightWs();
+            subscriptions = {block: false, tx: false};
+            insightWs.connect(subscriptions);
+            insightWs.subscriptions.tx.should.equal(false);
+            insightWs.subscriptions.block.should.equal(false);
         });
     });
 });
