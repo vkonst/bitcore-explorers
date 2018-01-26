@@ -1,0 +1,18 @@
+{
+  "_comments_": "pls note: two 'tx' messages (for two transactions) provided: 'non_coinbase_tx' and 'conibase_tx'",
+  "non_coinbase_tx": {
+    "txid": "afd071e16184ae983656338e0ed90c340ba7940ccdfb1613d2ae0a49f07cb167",
+    "valueOut": 1.0994392,
+    "vout": [
+      { "muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP": 100000000 },
+      { "mx6swcM5ggkuoxTpSLMmNGkjhp32vpvMBR": 9943920 }
+    ],
+    "isRBF": false
+  },
+  "conibase_tx": {
+    "txid": "b2e3187102fdb22469c1f726ac3f44c569bd70da056a452bfec6d360bcebb96d",
+    "valueOut": 25,
+    "vout": [],
+    "isRBF": false
+  }
+}

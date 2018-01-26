@@ -80,29 +80,29 @@ describe('InsightWs', function () {
     });
 
     describe('subscriptions', function () {
-        it('can call connect method without subscriptions', function () {
+        it('can call subscribe method without options for subscriptions', function () {
             var insightWs = new InsightWs();
-            insightWs.connect();
+            insightWs.subscribe();
             insightWs.subscriptions.tx.should.equal(false);
-            insightWs.subscriptions.block.should.equal(true);
+            insightWs.subscriptions.block.should.equal('detailed');
         });
-        it('can call connect method with custom subscriptions', function () {
+        it('can call subscribe method with custom subscriptions options', function () {
             var insightWs = new InsightWs();
 
             var subscriptions = {block: false, tx: true};
-            insightWs.connect(subscriptions);
+            insightWs.subscribe(subscriptions);
             insightWs.subscriptions.tx.should.equal(true);
             insightWs.subscriptions.block.should.equal(false);
 
             insightWs = new InsightWs();
             subscriptions.block = true;
-            insightWs.connect(subscriptions);
+            insightWs.subscribe(subscriptions);
             insightWs.subscriptions.tx.should.equal(true);
             insightWs.subscriptions.block.should.equal(true);
 
             insightWs = new InsightWs();
             subscriptions = {block: false, tx: false};
-            insightWs.connect(subscriptions);
+            insightWs.subscribe(subscriptions);
             insightWs.subscriptions.tx.should.equal(false);
             insightWs.subscriptions.block.should.equal(false);
         });

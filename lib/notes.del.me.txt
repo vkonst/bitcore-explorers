@@ -1,0 +1,196 @@
+//let newTx; insightWs.socket.on('tx', _newTx => newTx = _newTx);
+// newTx:
+{ txid: '44ac33cdcb169c8ab1d94428daca17aab8982ccf431315c5f2ef0ade861fbe14',
+  valueOut: 48.8999096,
+  vout:
+   [ { mwrQ5fEeK668oDEkhq3wkojW94NTjDFsb6: 4689990960 },
+     { muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP: 200000000 } ],
+  isRBF: false }
+
+// insight-api.getTransaction
+// let tx; insightWs.getTx("38136c041ae066741dead9bf10498b739cba2f1bc039b2617e70fd6e4b017cc9", (err,_tx) => tx = _tx);
+// tx:
+{ txid: '38136c041ae066741dead9bf10498b739cba2f1bc039b2617e70fd6e4b017cc9',
+  version: 1,
+  locktime: 144,
+  vin:
+   [ { txid: '74c2cf6f2b01cfcc0158c81ffba03f29f90a92d705895ab0e2140b4a6435ca23',
+       vout: 0,
+       sequence: 4294967294,
+       n: 0,
+       scriptSig: { hex: '47304402207b1ea7a4c8df7a68d56bb01dc38bcbe0fcd5fedf78a89b9fb64b1c136dd0324e02202a1cd37ab70f5a46de665673efbb0c91faf33b081bbd382ade1a76df136f7c6c012102cc4725f9c4d33bb7121b6597a6c3749b038bb13b03eb7eec9e3613fe35e7ff5f',
+                    asm: '304402207b1ea7a4c8df7a68d56bb01dc38bcbe0fcd5fedf78a89b9fb64b1c136dd0324e02202a1cd37ab70f5a46de665673efbb0c91faf33b081bbd382ade1a76df136f7c6c[ALL] 02cc4725f9c4d33bb7121b6597a6c3749b038bb13b03eb7eec9e3613fe35e7ff5f' },
+       addr: 'mhBsWsTpUaXXcya3yp8upkpm45YCRrVR1H',
+       valueSat: 9988680,
+       value: 0.0998868,
+       doubleSpentTxID: null },
+     { txid: '74c2cf6f2b01cfcc0158c81ffba03f29f90a92d705895ab0e2140b4a6435ca23',
+       vout: 1,
+       sequence: 4294967294,
+       n: 1,
+       scriptSig: { hex: '483045022100ce157c2aecd049fa054fc47fba6ec1eac53dba097b1447f17b3f56d4fe6c05ff02201650c0e64a58f092d03934e0373df9db5e11f05d9e2259eda81c52019d8127510121031366588586816959b3d0f55ed93130e140c7a1343d0508570fe714cfcc68705a',
+                    asm: '3045022100ce157c2aecd049fa054fc47fba6ec1eac53dba097b1447f17b3f56d4fe6c05ff02201650c0e64a58f092d03934e0373df9db5e11f05d9e2259eda81c52019d812751[ALL] 031366588586816959b3d0f55ed93130e140c7a1343d0508570fe714cfcc68705a' },
+       addr: 'muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP',
+       valueSat: 100000000,
+       value: 1,
+       doubleSpentTxID: null } ],
+  vout:
+   [ { value: '1.00000000',
+       n: 0,
+       scriptPubKey: { hex: '76a91497f06299fe96be93c90c93342bf5e1d6d74b189288ac',
+                       asm: 'OP_DUP OP_HASH160 97f06299fe96be93c90c93342bf5e1d6d74b1892 OP_EQUALVERIFY OP_CHECKSIG',
+                       addresses: [ 'muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP' ],
+                       type: 'pubkeyhash' },
+       spentTxId: null,
+       spentIndex: null,
+       spentHeight: null },
+     { value: '0.09981220',
+       n: 1,
+       scriptPubKey: { hex: '76a9142fcaf4912f356b3b8386003cd71938d71578f04b88ac',
+                       asm: 'OP_DUP OP_HASH160 2fcaf4912f356b3b8386003cd71938d71578f04b OP_EQUALVERIFY OP_CHECKSIG',
+                       addresses: [ 'mjsfBeuNLTrH1MDZVgyEqKpBC4VF7TeFcL' ],
+                       type: 'pubkeyhash' },
+       spentTxId: null,
+       spentIndex: null,
+       spentHeight: null } ],
+  blockheight: -1,
+  confirmations: 0,
+  time: 1516709409,
+  valueOut: 1.0998122,
+  size: 373,
+  valueIn: 1.0998868,
+  fees: 0.0000746 }
+
+// insightWs.events.on('insightWs:newBlockHash', (blockHash) => console.log(blockHash))
+"25c997224436e703d069986b0a63837447a137592d17a124e3b1a81117b49c57"
+
+// let block; insightWs.events.on('insightWs:newBlock', (_block) => block = _block)
+// block:
+{
+  "hash": "0a49a1d00280ed99764e4be53b2a228f62b5673eb82afeda5d9f005efdd4ecae",
+  "previousblockhash": "1fe5c0e8bf5ab7b49eeab05517f779061815580d0b596ae82bbe21bb47037ff2",
+   "height": 149,
+   "confirmations": 1,
+   "time": 1516789357,
+   "transactionIds": [
+     "49d74da3113b63ad2e24d4962cd2fb964a201532717d013ac2447b8a10356c5d"
+    ]
+}
+
+// insight-api.getTransaction
+// NB: the "OP_RETURN" UTXO does not have address
+// https://insight.bitpay.com/api/tx/c4ab9b3547312ff43ad5879ddc02b76b2e61f6cf1cfa797360ae4fd45480d03e
+{
+    "txid": "c4ab9b3547312ff43ad5879ddc02b76b2e61f6cf1cfa797360ae4fd45480d03e",
+    "version": 1,
+    "locktime": 0,
+    "blockhash": "0000000000000000002ea7492005955a17d6f3682ae71c81403400ed4a1117f6",
+    "blockheight": 506018,
+    "confirmations": 3,
+    "time": 1516864215,
+    "blocktime": 1516864215,
+    "valueOut": 0.00397798,
+    "size": 254,
+    "valueIn": 0.0049824,
+    "fees": 0.00100442,
+    "vin": [{
+        "txid": "e193c66367916aaa1ac9b9ba7a72466d68948258910521533f8cd8a7bcda8219",
+        "vout": 1,
+        "sequence": 4294967295,
+        "n": 0,
+        "scriptSig": {
+            "hex": "4830450221009ccbe3cb88be6ce66c1859499132d3c8e7386de7fd7a3c9ffad1873bf8df59090220478f131852b20aea8b7ba63dddf9812a921553a67a55ac65eae412dac4e3bb260121025027c8f98b326edde601b28062b2f7c2a528882a4686d3f8d2b101dccd89f3fb",
+            "asm": "30450221009ccbe3cb88be6ce66c1859499132d3c8e7386de7fd7a3c9ffad1873bf8df59090220478f131852b20aea8b7ba63dddf9812a921553a67a55ac65eae412dac4e3bb26[ALL] 025027c8f98b326edde601b28062b2f7c2a528882a4686d3f8d2b101dccd89f3fb"
+        },
+        "addr": "1kU9nwEUVgW7q5hSdFQJcqQWcchHGnqq4",
+        "valueSat": 498240,
+        "value": 0.0049824,
+        "doubleSpentTxID": null
+    }],
+    "vout": [
+        {
+            "value": "0.00000000",
+            "n": 0,
+            "scriptPubKey": {
+                "hex": "6a33ce1f43fbc767b92c956abaac5e40a3e6aabd28af696702334d9696065dbdd9e89f0800bb39ededbe5e39ae30eb24aaa36717c0",
+                "asm": "OP_RETURN ce1f43fbc767b92c956abaac5e40a3e6aabd28af696702334d9696065dbdd9e89f0800bb39ededbe5e39ae30eb24aaa36717c0"
+            },
+            "spentTxId": null,
+            "spentIndex": null,
+            "spentHeight": null
+        },
+        {
+            "value": "0.00397798",
+            "n": 1,
+            "scriptPubKey": {
+                "hex": "76a91408388d25e4d38b2ee3beb50d7effffbedd9046c988ac",
+                "asm": "OP_DUP OP_HASH160 08388d25e4d38b2ee3beb50d7effffbedd9046c9 OP_EQUALVERIFY OP_CHECKSIG",
+                "addresses": ["1kU9nwEUVgW7q5hSdFQJcqQWcchHGnqq4"],
+                "type": "pubkeyhash"
+            },
+            "spentTxId": null,
+            "spentIndex": null,
+            "spentHeight": null
+        }
+    ]
+}
+
+// Unspent Outputs from Insight-API
+// http://127.0.0.1/insight-api/addr/muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP/utxo
+[
+    {
+        "address": "muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP",
+        "txid": "0b72da64adae39cffb65097c0d34348912c5307e8457fb26270f7d22f557e0e6",
+        "vout": 1,
+        "scriptPubKey":"76a91497f06299fe96be93c90c93342bf5e1d6d74b189288ac",
+        "amount":1,
+        "satoshis":100000000,
+        "height":147,
+        "confirmations":6
+    },
+    {
+        "address":"muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP",
+        "txid":"4f1e64b721a699bfd3fbea6d8021c995b698f48ebf96f6bf31e9a97d4effc4c6",
+        "vout":1,
+        "scriptPubKey":"76a91497f06299fe96be93c90c93342bf5e1d6d74b189288ac",
+        "amount":1,
+        "satoshis":100000000,
+        "height":146,
+        "confirmations":7
+    }
+]
+
+// utxo:
+// {"address":"muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP","txid":"4f1e64b721a699bfd3fbea6d8021c995b698f48ebf96f6bf31e9a97d4effc4c6","vout":1,"scriptPubKey":"76a91497f06299fe96be93c90c93342bf5e1d6d74b189288ac","amount":1,"satoshis":100000000,"height":146,"confirmations":7}
+
+
+// rpcClient.generate(1, printer('generate'));
+[*] insightWs:newTx         { txid: 'b2e3187102fdb22469c1f726ac3f44c569bd70da056a452bfec6d360bcebb96d', valueOut: 25, vout: [], isRBF: false }
+[*] insightWs:newBlockHash  70e54ca24443d64f8598a4cc37651d94b7a914119446297a3718f8245680670a
+[*] insightWs:newTxDetails  { txid: 'b2e3187102fdb22469c1f726ac3f44c569bd70da056a452bfec6d360bcebb96d', version: 1, locktime: 0, blockhash: '70e54ca24443d64f8598a4cc37651d94b7a914119446297a3718f8245680670a', blockheight: 153, confirmations: 1, time: 1516881873, blocktime: 1516881873, isCoinBase: true, valueOut: 25, size: 100, vin: [ { coinbase: '0299000101', sequence: 4294967295, n: 0 } ], vout: [ { value: '25.00000000', n: 0, scriptPubKey: [Object], spentTxId: null, spentIndex: null, spentHeight: null } ] }
+[*] insightWs:address       { address: 'mqmAZvaW4yejNGUer6coGExNfPeuSa11gS', value: '25.00000000', txid: 'b2e3187102fdb22469c1f726ac3f44c569bd70da056a452bfec6d360bcebb96d', confirmations: 1, type: 'received' }
+[*] insightWs:newBlock      { hash: '70e54ca24443d64f8598a4cc37651d94b7a914119446297a3718f8245680670a', previousblockhash: '2702d7542d52a61b660046f2368013a05a09f958d365e49c77bf1f96d6575d56', height: 153,   confirmations: 1, time: 1516881873, transactionIds: [ 'b2e3187102fdb22469c1f726ac3f44c569bd70da056a452bfec6d360bcebb96d' ] }
+// rpcClient.sendtoaddress('muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP', 1, '', '', printer('sendtoaddress'));
+[*] insightWs:newTx         { txid: 'afd071e16184ae983656338e0ed90c340ba7940ccdfb1613d2ae0a49f07cb167', valueOut: 1.0994392, vout: [ { muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP: 100000000 }, { mx6swcM5ggkuoxTpSLMmNGkjhp32vpvMBR: 9943920 } ], isRBF: false }
+[*] insightWs:newTxDetails  { txid: 'afd071e16184ae983656338e0ed90c340ba7940ccdfb1613d2ae0a49f07cb167', version: 1, locktime: 139, vin: [ { txid: '8be1137a97f9cca44787fd6cbbb2571ad165448dc53b2de273be97468582b458', vout: 0, sequence: 4294967294, n: 0, scriptSig: [Object], addr: 'muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP', valueSat: 100000000, value: 1, doubleSpentTxID: null }, { txid: '8be1137a97f9cca44787fd6cbbb2571ad165448dc53b2de273be97468582b458', vout: 1, sequence: 4294967294, n: 1, scriptSig: [Object], addr: 'mnpFYweQ6BUSrUgaU4tZUr8wtBCBDbuxHy', valueSat: 9951380, value: 0.0995138, doubleSpentTxID: null } ], vout: [ { value: '1.00000000', n: 0, scriptPubKey: [Object], spentTxId: null, spentIndex: null, spentHeight: null }, { value: '0.09943920', n: 1, scriptPubKey: [Object], spentTxId: null, spentIndex: null, spentHeight: null } ], blockheight: -1, confirmations: 0, time: 1516882664, valueOut: 1.0994392, size: 372, valueIn: 1.0995138, fees: 0.0000746 }
+[*] insightWs:address       { address: 'muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP', value: '1.00000000', txid: 'afd071e16184ae983656338e0ed90c340ba7940ccdfb1613d2ae0a49f07cb167', confirmations: 0, type: 'received' }
+[*] insightWs:address       { address: 'mx6swcM5ggkuoxTpSLMmNGkjhp32vpvMBR', value: '0.09943920', txid: 'afd071e16184ae983656338e0ed90c340ba7940ccdfb1613d2ae0a49f07cb167', confirmations: 0, type: 'received' }
+// rpcClient.generate(1, printer('generate'));
+[*] insightWs:newTx         { txid: '2fcdb36f8c02889dcd5106def8e9a55a4b61dd07b6055eae1ecb69bcd005a1fc', valueOut: 25.0000746, vout: [], isRBF: false }
+[*] insightWs:newBlockHash  4cfc2738c864151956b13b5f0c47acee7707f495f4472852536ed1ef27603d34
+[*] insightWs:newTxDetails  { txid: '2fcdb36f8c02889dcd5106def8e9a55a4b61dd07b6055eae1ecb69bcd005a1fc', version: 1, locktime: 0,    vin: [ { coinbase: '029f000101', sequence: 4294967295, n: 0 } ], vout: [ { value: '25.00007460', n: 0, scriptPubKey: [Object], spentTxId: null, spentIndex: null, spentHeight: null } ], blockhash: '4cfc2738c864151956b13b5f0c47acee7707f495f4472852536ed1ef27603d34', blockheight: 159, confirmations: 0, time: 1516883163, isCoinBase: true, valueOut: 25.0000746, size: 100 }
+[*] insightWs:address       { address: 'mz644s6S6vHXRpdUKYo9fPNhiVYNA2QGmX', value: '25.00007460', txid: '2fcdb36f8c02889dcd5106def8e9a55a4b61dd07b6055eae1ecb69bcd005a1fc', confirmations: 0, type: 'received' }
+[*] insightWs:newBlock      { hash: '4cfc2738c864151956b13b5f0c47acee7707f495f4472852536ed1ef27603d34', previousblockhash: '7dcd556b1ecef5e8528d6ca3fbb8e48faf3bb46a85ff4dd1cd545cab16dac4ae', height: 159, confirmations: 1, time: 1516883163, transactionIds: [ '2fcdb36f8c02889dcd5106def8e9a55a4b61dd07b6055eae1ecb69bcd005a1fc', 'afd071e16184ae983656338e0ed90c340ba7940ccdfb1613d2ae0a49f07cb167' ] }
+// rpcClient.generate(1, printer('generate'));
+[*] insightWs:newTx         { txid: '80a700fc0b619a81fd01fd939e4354574a3ebd7252c39914bd87878f21dd5443', valueOut: 25, vout: [], isRBF: false }
+[*] insightWs:newBlockHash  062855f558bcfaed152506de3ba0aa503b140d5fb588f69a3f78fcf79108bff1
+[*] insightWs:newTxDetails  { txid: '80a700fc0b619a81fd01fd939e4354574a3ebd7252c39914bd87878f21dd5443', version: 1, locktime: 0, vin: [ { coinbase: '02a0000101', sequence: 4294967295, n: 0 } ], vout: [ { value: '25.00000000', n: 0, scriptPubKey: [Object], spentTxId: null, spentIndex: null, spentHeight: null } ], blockhash: '062855f558bcfaed152506de3ba0aa503b140d5fb588f69a3f78fcf79108bff1', blockheight: 160, confirmations: 1, time: 1516883353, blocktime: 1516883353, isCoinBase: true, valueOut: 25, size: 100 }
+[*] insightWs:address       { address: 'mvMv5Y3Qc3h6KXF5UwepPwWEy9fvtmTgPo', value: '25.00000000', txid: '80a700fc0b619a81fd01fd939e4354574a3ebd7252c39914bd87878f21dd5443', confirmations: 1, type: 'received' }
+[*] insightWs:newBlock      { hash: '062855f558bcfaed152506de3ba0aa503b140d5fb588f69a3f78fcf79108bff1', previousblockhash: '4cfc2738c864151956b13b5f0c47acee7707f495f4472852536ed1ef27603d34', height: 160, confirmations: 1, time: 1516883353, transactionIds: [ '80a700fc0b619a81fd01fd939e4354574a3ebd7252c39914bd87878f21dd5443' ] }
+
+
+const rpcClient = usrObj.rpcClient; const printer = msg => (err, data) => { console.log(`[*] ${msg}`); if (err) { console.error(err); } else { console.log(data); } };
+const address = 'muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP';
+rpcClient.walletpassphrase('nopass', 360, printer('walletpassphrase'));
+rpcClient.generate(1, printer('generate'));
+rpcClient.sendtoaddress(address, 1, '', '', printer('sendtoaddress'));
