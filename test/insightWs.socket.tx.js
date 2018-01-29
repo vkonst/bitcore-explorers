@@ -15,7 +15,7 @@ var AddressInfo = explorers.models.AddressInfo;
 var Networks = bitcore.Networks;
 
 
-describe('InsightWs socket', function() {
+describe('InsightWs socket tx events', function() {
     var insightWs, ioServer;
     var serverUrl = 'http://localhost:3002';
 

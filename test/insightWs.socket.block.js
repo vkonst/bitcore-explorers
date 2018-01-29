@@ -14,58 +14,50 @@ var Transaction = bitcore.Transaction;
 var AddressInfo = explorers.models.AddressInfo;
 var Networks = bitcore.Networks;
 
-if (typeof process === 'undefined' || process.type === 'renderer') {
-    // test for browser
-} else {
-    // test for node.js
+describe('InsightWs socket block events', function() {
+    var insightWs, ioServer;
+    var serverUrl = 'http://localhost:3001';
 
-    console.log("process type: ", process.type);
+    var sampleBlock = require('./models/sampleBlockFromInsight');
 
-    describe('InsightWs socket (nodejs only)', function() {
-        var insightWs, ioServer;
-        var serverUrl = 'http://localhost:3001';
+    before(function(done) {
+        ioServer = io.listen(3001);
+        done();
+    }); // before
 
-        var sampleBlock = require('./models/sampleBlockFromInsight');
-
-        before(function(done) {
-            ioServer = io.listen(3001);
-            done();
-        }); // before
-
-        beforeEach(function(done) {
-            insightWs = new InsightWs(serverUrl);
-            insightWs.requestGet = sinon.stub();
-            insightWs.requestGet.onFirstCall().callsArgWith(1, null, {statusCode: 200}, sampleBlock);
-            insightWs.subscribe();
-            insightWs.socket.on('connect', function() {
-                done();
-            });
-        }); // beforeEach
-
-        afterEach(function (done) {
-            if (insightWs.socket.connected) {
-                insightWs.socket.disconnect();
-            }
+    beforeEach(function(done) {
+        insightWs = new InsightWs(serverUrl);
+        insightWs.requestGet = sinon.stub();
+        insightWs.requestGet.onFirstCall().callsArgWith(1, null, {statusCode: 200}, sampleBlock);
+        insightWs.subscribe();
+        insightWs.socket.on('connect', function() {
             done();
         });
+    }); // beforeEach
 
-        it('can get new blockHash web socket server', function(done) {
-            insightWs.events.on('block', function doTest(newBlockHash) {
-                newBlockHash.should.equal(sampleBlock.hash);
-                // make assertions
-                done();
-            }); // doTest
-            emitEvent('block', sampleBlock.hash);
-        }); // it
+    afterEach(function (done) {
+        if (insightWs.socket.connected) {
+            insightWs.socket.disconnect();
+        }
+        done();
+    });
 
-        it('can get new block details from HTTP API', function(done) {
-            insightWs.events.on('block:details', function doTest(newBlock) {
-                newBlock.hash.should.equal(sampleBlock.hash);
-                // make assertions
-                done();
-            }); // doTest
-            emitEvent('block', sampleBlock.hash);
-        }); // it
-        function emitEvent(event, info) { ioServer.emit(event, info); }
-    }); // describe
-}
+    it('can get new blockHash web socket server', function(done) {
+        insightWs.events.on('block', function doTest(newBlockHash) {
+            newBlockHash.should.equal(sampleBlock.hash);
+            // make assertions
+            done();
+        }); // doTest
+        emitEvent('block', sampleBlock.hash);
+    }); // it
+
+    it('can get new block details from HTTP API', function(done) {
+        insightWs.events.on('block:details', function doTest(newBlock) {
+            newBlock.hash.should.equal(sampleBlock.hash);
+            // make assertions
+            done();
+        }); // doTest
+        emitEvent('block', sampleBlock.hash);
+    }); // it
+    function emitEvent(event, info) { ioServer.emit(event, info); }
+}); // describe
