@@ -42,6 +42,13 @@ if (typeof process === 'undefined' || process.type === 'renderer') {
             });
         }); // beforeEach
 
+        afterEach(function (done) {
+            if (insightWs.socket.connected) {
+                insightWs.socket.disconnect();
+            }
+            done();
+        });
+
         it('can get new blockHash web socket server', function(done) {
             insightWs.events.on('block', function doTest(newBlockHash) {
                 newBlockHash.should.equal(sampleBlock.hash);

@@ -17,13 +17,13 @@ var Networks = bitcore.Networks;
 
 describe('InsightWs socket', function() {
     var insightWs, ioServer;
-    var serverUrl = 'http://localhost:3001';
+    var serverUrl = 'http://localhost:3002';
 
     var sampleTxMsgsFromInsight = require('./models/sampleTxMsgsFromInsight');
     var sampleTxFromInsight = require('./models/sampleTxFromInsight');
 
     before(function(done) {
-        ioServer = io.listen(3001);
+        ioServer = io.listen(3002);
         done();
     }); // before
 
@@ -31,15 +31,22 @@ describe('InsightWs socket', function() {
         insightWs = new InsightWs(serverUrl);
         insightWs.requestGet = sinon.stub();
         insightWs.requestGet.onFirstCall().callsArgWith(1, null, {statusCode: 200},
-            sampleTxFromInsight);
-        var subscriptions = {block: false, tx : true};
+            JSON.stringify(sampleTxFromInsight));
+        var subscriptions = {block: false, tx : 'detailed'};
         insightWs.subscribe(subscriptions);
         insightWs.socket.on('connect', function() {
             done();
         });
     }); // beforeEach
 
-    it('can get new tx from web socket server', function (done) {
+    afterEach(function (done) {
+       if (insightWs.socket.connected) {
+           insightWs.socket.disconnect();
+       }
+       done();
+    });
+
+    it('can get new tx from web socket  (non_coinbase_tx)', function (done) {
         insightWs.events.on('tx', function (txMsg) {
             txMsg.txid.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.txid);
             done();
@@ -47,12 +54,21 @@ describe('InsightWs socket', function() {
         emitEvent('tx', sampleTxMsgsFromInsight.non_coinbase_tx);
     });
 
-    it('can get new tx details from HTTP API', function (done) {
-        insightWs.events.on('tx:details', function (txData) {
-            console.log("txData: ", txData);
+    it('can get new tx from web socket  (coinbase_tx)', function (done) {
+        insightWs.events.on('tx', function (txMsg) {
+            txMsg.txid.should.equal(sampleTxMsgsFromInsight.conibase_tx.txid);
             done();
         });
-        emitEvent('tx', sampleTxMsgsFromInsight.non_coinbase_tx);
+        emitEvent('tx', sampleTxMsgsFromInsight.conibase_tx);
     });
+
+    it('can get new tx details from HTTP API', function (done) {
+        insightWs.events.on('tx:details', function (txData) {
+            txData.txid.should.equal(sampleTxMsgsFromInsight.tx_detailed_event.txid);
+            done();
+        });
+        emitEvent('tx', sampleTxMsgsFromInsight.tx_detailed_event);
+    });
+
     function emitEvent(event, info) { ioServer.emit(event, info); }
 }); // describe
