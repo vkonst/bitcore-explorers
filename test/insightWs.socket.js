@@ -5,6 +5,7 @@ var should = require('chai').should();
 var expect = require('chai').expect;
 var bitcore = require('bitcore-lib');
 var explorers = require('../');
+var io = require('socket.io');
 
 var Insight = explorers.Insight;
 var InsightWs = explorers.InsightWs;
@@ -13,67 +14,51 @@ var Transaction = bitcore.Transaction;
 var AddressInfo = explorers.models.AddressInfo;
 var Networks = bitcore.Networks;
 
+if (typeof process === 'undefined' || process.type === 'renderer') {
+    // test for browser
+} else {
+    // test for nodejs
 
-var isNode =
-    typeof global !== "undefined" &&
-    {}.toString.call(global) === '[object global]';
-
-
-if (isNode) {
-    setTimeout(function () {
+    describe('InsightWs socket (nodejs only)', function() {
+        var insightWs, ioServer;
         var serverUrl = 'http://localhost:3001';
-        var sampleTxFromInsight = require('./models/sampleTxFromInsight');
-        var sampleBlockFromInsight = require('./models/sampleBlockFromInsight');
 
-        var ioServer = require('socket.io').listen(3001);
+        var sampleTx = require('./models/sampleTxFromInsight');
+        var sampleBlock = require('./models/sampleBlockFromInsight');
 
-        ioServer.on('connection', function () {
-            ioServer.emit('connect');
-            ioServer.emit('tx', sampleTxFromInsight);
-            ioServer.emit('block', sampleBlockFromInsight);
-        });
+        before(function(done) {
+            ioServer = io.listen(3001);
+            done();
+        }); // before
 
-
-        var insightWs;
-
-        insightWs = new InsightWs(serverUrl);
-        insightWs.connect({block: true, tx: true});
-
-        var isConnected = false;
-        insightWs.events.on('insightWs:connected', function () {
-            isConnected = true;
-        });
-
-        var isGetTx = false;
-        insightWs.events.on('insightWs:newTx', function (newTx) {
-            if (sampleTxFromInsight === newTx) {
-                isGetTx = true;
-            }
-        });
-
-        var isGetBlock = false;
-        insightWs.events.on('insightWs:newBlock', function (newBlock) {
-            if (sampleBlockFromInsight === newBlock) {
-                isGetBlock = true;
-            }
-        });
-
-        describe('InsightWs socket', function () {
-            describe('connect to web socket server, listen \'tx\' and \'block\' events', function () {
-                it('can connect to web socket server', function () {
-                    isConnected.should.equal(true);
-                });
-
-                it('can catch new tx event', function () {
-                    isGetTx.should.equal(true);
-                });
-
-                it('can catch new block event', function () {
-                    isGetBlock.should.equal(true);
-                });
+        beforeEach(function(done) {
+            insightWs = new InsightWs(serverUrl);
+            insightWs.requestGet = sinon.stub();
+            insightWs.requestGet.onFirstCall().callsArgWith(1, null, {statusCode: 200}, sampleBlock);
+            insightWs.subscribe();
+            insightWs.socket.on('connect', function() {
+                done();
             });
-        });
+        }); // beforeEach
 
-        run();
-    }, 5000);
+        it('can get new blockHash from http API', function(done) {
+            insightWs.events.on('block', function doTest(newBlockHash) {
+                newBlockHash.should.equal(sampleBlock.hash);
+                // make assertions
+                done();
+            }); // doTest
+            emitEvent('block', sampleBlock.hash);
+        }); // it
+
+        it('can get new block details', function(done) {
+            insightWs.events.on('block:details', function doTest(newBlock) {
+                newBlock.hash.should.equal(sampleBlock.hash);
+                // make assertions
+                done();
+            }); // doTest
+            emitEvent('block', sampleBlock.hash);
+        }); // it
+        function emitEvent(event, info) { ioServer.emit(event, info); }
+    }); // describe
+
 }
