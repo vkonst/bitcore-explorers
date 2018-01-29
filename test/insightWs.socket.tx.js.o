@@ -1,0 +1,58 @@
+'use strict';
+
+var sinon = require('sinon');
+var should = require('chai').should();
+var expect = require('chai').expect;
+var bitcore = require('bitcore-lib');
+var explorers = require('../');
+var io = require('socket.io');
+
+var Insight = explorers.Insight;
+var InsightWs = explorers.InsightWs;
+var Address = bitcore.Address;
+var Transaction = bitcore.Transaction;
+var AddressInfo = explorers.models.AddressInfo;
+var Networks = bitcore.Networks;
+
+
+describe('InsightWs socket', function() {
+    var insightWs, ioServer;
+    var serverUrl = 'http://localhost:3001';
+
+    var sampleTxMsgsFromInsight = require('./models/sampleTxMsgsFromInsight');
+    var sampleTxFromInsight = require('./models/sampleTxFromInsight');
+
+    before(function(done) {
+        ioServer = io.listen(3001);
+        done();
+    }); // before
+
+    beforeEach(function(done) {
+        insightWs = new InsightWs(serverUrl);
+        insightWs.requestGet = sinon.stub();
+        insightWs.requestGet.onFirstCall().callsArgWith(1, null, {statusCode: 200},
+            sampleTxFromInsight);
+        var subscriptions = {block: false, tx : true};
+        insightWs.subscribe(subscriptions);
+        insightWs.socket.on('connect', function() {
+            done();
+        });
+    }); // beforeEach
+
+    it('can get new tx from web socket server', function (done) {
+        insightWs.events.on('tx', function (txMsg) {
+            txMsg.txid.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.txid);
+            done();
+        });
+        emitEvent('tx', sampleTxMsgsFromInsight.non_coinbase_tx);
+    });
+
+    it('can get new tx details from HTTP API', function (done) {
+        insightWs.events.on('tx:details', function (txData) {
+            console.log("txData: ", txData);
+            done();
+        });
+        emitEvent('tx', sampleTxMsgsFromInsight.non_coinbase_tx);
+    });
+    function emitEvent(event, info) { ioServer.emit(event, info); }
+}); // describe

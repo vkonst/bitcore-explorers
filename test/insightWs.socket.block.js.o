@@ -17,13 +17,14 @@ var Networks = bitcore.Networks;
 if (typeof process === 'undefined' || process.type === 'renderer') {
     // test for browser
 } else {
-    // test for nodejs
+    // test for node.js
+
+    console.log("process type: ", process.type);
 
     describe('InsightWs socket (nodejs only)', function() {
         var insightWs, ioServer;
         var serverUrl = 'http://localhost:3001';
 
-        var sampleTx = require('./models/sampleTxFromInsight');
         var sampleBlock = require('./models/sampleBlockFromInsight');
 
         before(function(done) {
@@ -41,7 +42,7 @@ if (typeof process === 'undefined' || process.type === 'renderer') {
             });
         }); // beforeEach
 
-        it('can get new blockHash from http API', function(done) {
+        it('can get new blockHash web socket server', function(done) {
             insightWs.events.on('block', function doTest(newBlockHash) {
                 newBlockHash.should.equal(sampleBlock.hash);
                 // make assertions
@@ -50,7 +51,7 @@ if (typeof process === 'undefined' || process.type === 'renderer') {
             emitEvent('block', sampleBlock.hash);
         }); // it
 
-        it('can get new block details', function(done) {
+        it('can get new block details from HTTP API', function(done) {
             insightWs.events.on('block:details', function doTest(newBlock) {
                 newBlock.hash.should.equal(sampleBlock.hash);
                 // make assertions
@@ -60,5 +61,4 @@ if (typeof process === 'undefined' || process.type === 'renderer') {
         }); // it
         function emitEvent(event, info) { ioServer.emit(event, info); }
     }); // describe
-
 }

@@ -95,7 +95,14 @@ describe('InsightWs', function () {
             insightWs.subscriptions.block.should.equal(false);
 
             insightWs = new InsightWs();
+            subscriptions.tx = 'detailed';
+            insightWs.subscribe(subscriptions);
+            insightWs.subscriptions.tx.should.equal('detailed');
+            insightWs.subscriptions.block.should.equal(false);
+
+            insightWs = new InsightWs();
             subscriptions.block = true;
+            subscriptions.tx = true;
             insightWs.subscribe(subscriptions);
             insightWs.subscriptions.tx.should.equal(true);
             insightWs.subscriptions.block.should.equal(true);
