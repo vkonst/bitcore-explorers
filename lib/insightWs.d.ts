@@ -1,4 +1,4 @@
-declare module "inisghtWs" {
+declare module "insightWs" {
     const insightWs: InsightWs;
 
     type subscribeOpts = {block: string|boolean, tx: string|boolean};
