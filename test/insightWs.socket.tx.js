@@ -1,10 +1,11 @@
+/* global describe, it, before, beforeEach, afterEach */
+
 'use strict';
 
 var sinon = require('sinon');
-var should = require('chai').should();
-var bitcore = require('bitcore-lib');
-var io = require('socket.io');
+var expect = require('chai').expect;
 var explorers = require('../');
+var io = require('socket.io');
 
 var InsightWs = explorers.InsightWs;
 
@@ -40,29 +41,35 @@ describe('InsightWs socket tx events', function() {
        done();
     });
 
-    it('can get \'tx\' msg from web socket', function (done) {
+    it('can get new tx from web socket  (non_coinbase_tx)', function (done) {
         insightWs.events.on('tx', function (txMsg) {
-            txMsg.txid.should.deep.equal(sampleTxMsgsFromInsight.non_coinbase_tx.txid);
+            txMsg.txid.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.txid);
+            txMsg.valueOut.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.valueOut);
+            txMsg.isRBF.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.isRBF);
+            expect(txMsg.vout).to.deep.equal(sampleTxMsgsFromInsight.non_coinbase_tx.vout);
             done();
         });
         emitEvent('tx', sampleTxMsgsFromInsight.non_coinbase_tx);
     });
 
-    it('can get new \'tx\' msg from web socket on coinbase tx', function (done) {
+    it('can get new tx from web socket  (coinbase_tx)', function (done) {
         insightWs.events.on('tx', function (txMsg) {
-            txMsg.txid.should.deep.equal(sampleTxMsgsFromInsight.conibase_tx.txid);
+            txMsg.txid.should.equal(sampleTxMsgsFromInsight.coinbase_tx.txid);
+            txMsg.valueOut.should.equal(sampleTxMsgsFromInsight.coinbase_tx.valueOut);
+            txMsg.isRBF.should.equal(sampleTxMsgsFromInsight.coinbase_tx.isRBF);
+            expect(txMsg.vout).to.deep.equal(sampleTxMsgsFromInsight.coinbase_tx.vout);
             done();
         });
-        emitEvent('tx', sampleTxMsgsFromInsight.conibase_tx);
+        emitEvent('tx', sampleTxMsgsFromInsight.coinbase_tx);
     });
 
     it('can get new tx details from HTTP API', function (done) {
         insightWs.events.on('tx:details', function (txData) {
-            txData.txid.should.deep.equal(sampleTxMsgsFromInsight.tx_detailed_event.txid);
+            expect(txData).to.deep.equal(sampleTxFromInsight);
             done();
         });
-        emitEvent('tx', sampleTxMsgsFromInsight.tx_detailed_event);
+        emitEvent('tx', sampleTxMsgsFromInsight.coinbase_tx);
     });
 
-    function emitEvent(event, info) { ioServer.emit(event, info); }
+    function emitEvent(event, info) { ioServer.emit(event, info); } // jshint ignore: line
 }); // describe

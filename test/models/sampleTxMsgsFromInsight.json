@@ -9,13 +9,7 @@
     ],
     "isRBF": false
   },
-  "conibase_tx": {
-    "txid": "b2e3187102fdb22469c1f726ac3f44c569bd70da056a452bfec6d360bcebb96d",
-    "valueOut": 25,
-    "vout": [],
-    "isRBF": false
-  },
-  "tx_detailed_event": {
+  "coinbase_tx": {
     "txid": "38136c041ae066741dead9bf10498b739cba2f1bc039b2617e70fd6e4b017cc9",
     "valueOut": 1.0998122,
     "vout": [],

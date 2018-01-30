@@ -1,18 +1,13 @@
+/* global describe, it, before, beforeEach, afterEach */
+
 'use strict';
 
 var sinon = require('sinon');
-var should = require('chai').should();
 var expect = require('chai').expect;
-var bitcore = require('bitcore-lib');
 var explorers = require('../');
 var io = require('socket.io');
 
-var Insight = explorers.Insight;
 var InsightWs = explorers.InsightWs;
-var Address = bitcore.Address;
-var Transaction = bitcore.Transaction;
-var AddressInfo = explorers.models.AddressInfo;
-var Networks = bitcore.Networks;
 
 describe('InsightWs socket block events', function() {
     var insightWs, ioServer;
@@ -55,12 +50,10 @@ describe('InsightWs socket block events', function() {
             newBlock.height.should.equal(sampleBlockFromInsight.height);
             newBlock.confirmations.should.equal(sampleBlockFromInsight.confirmations);
             newBlock.time.should.equal(sampleBlockFromInsight.time);
-            newBlock.transactionIds.forEach(function (each_tx, index) {
-                each_tx.should.equal(sampleBlockFromInsight.tx[index]);
-            });
+            expect(newBlock.transactionIds).to.deep.equal(sampleBlockFromInsight.tx);
             done();
         }); // doTest
         emitEvent('block', sampleBlockFromInsight.hash);
     }); // it
-    function emitEvent(event, info) { ioServer.emit(event, info); }
+    function emitEvent(event, info) { ioServer.emit(event, info); } // jshint ignore: line
 }); // describe

@@ -33,9 +33,9 @@ describe('TxMsg', function() {
         });
 
         it('parses correctly a sample coinbase tx msg from Insight', function() {
-            txMsg = TxMsg.fromInsight(data.conibase_tx);
-            txMsg.txid.should.equal('b2e3187102fdb22469c1f726ac3f44c569bd70da056a452bfec6d360bcebb96d');
-            txMsg.valueOut.should.equal(25);
+            txMsg = TxMsg.fromInsight(data.coinbase_tx);
+            txMsg.txid.should.equal('38136c041ae066741dead9bf10498b739cba2f1bc039b2617e70fd6e4b017cc9');
+            txMsg.valueOut.should.equal(1.0998122);
             txMsg.vout.should.deep.equal([]);
             txMsg.isRBF.should.equal(false);
         });
