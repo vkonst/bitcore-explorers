@@ -2,17 +2,11 @@
 
 var sinon = require('sinon');
 var should = require('chai').should();
-var expect = require('chai').expect;
 var bitcore = require('bitcore-lib');
-var explorers = require('../');
 var io = require('socket.io');
+var explorers = require('../');
 
-var Insight = explorers.Insight;
 var InsightWs = explorers.InsightWs;
-var Address = bitcore.Address;
-var Transaction = bitcore.Transaction;
-var AddressInfo = explorers.models.AddressInfo;
-var Networks = bitcore.Networks;
 
 
 describe('InsightWs socket tx events', function() {
@@ -46,17 +40,17 @@ describe('InsightWs socket tx events', function() {
        done();
     });
 
-    it('can get new tx from web socket  (non_coinbase_tx)', function (done) {
+    it('can get \'tx\' msg from web socket', function (done) {
         insightWs.events.on('tx', function (txMsg) {
-            txMsg.txid.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.txid);
+            txMsg.txid.should.deep.equal(sampleTxMsgsFromInsight.non_coinbase_tx.txid);
             done();
         });
         emitEvent('tx', sampleTxMsgsFromInsight.non_coinbase_tx);
     });
 
-    it('can get new tx from web socket  (coinbase_tx)', function (done) {
+    it('can get new \'tx\' msg from web socket on coinbase tx', function (done) {
         insightWs.events.on('tx', function (txMsg) {
-            txMsg.txid.should.equal(sampleTxMsgsFromInsight.conibase_tx.txid);
+            txMsg.txid.should.deep.equal(sampleTxMsgsFromInsight.conibase_tx.txid);
             done();
         });
         emitEvent('tx', sampleTxMsgsFromInsight.conibase_tx);
@@ -64,7 +58,7 @@ describe('InsightWs socket tx events', function() {
 
     it('can get new tx details from HTTP API', function (done) {
         insightWs.events.on('tx:details', function (txData) {
-            txData.txid.should.equal(sampleTxMsgsFromInsight.tx_detailed_event.txid);
+            txData.txid.should.deep.equal(sampleTxMsgsFromInsight.tx_detailed_event.txid);
             done();
         });
         emitEvent('tx', sampleTxMsgsFromInsight.tx_detailed_event);
