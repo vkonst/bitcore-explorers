@@ -1,3 +1,4 @@
+/* jshint -W101 */
 'use strict';
 
 var should = require('chai').should();

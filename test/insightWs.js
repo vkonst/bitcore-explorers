@@ -1,16 +1,10 @@
 'use strict';
 
-var sinon = require('sinon');
 var should = require('chai').should();
-var expect = require('chai').expect;
 var bitcore = require('bitcore-lib');
 var explorers = require('../');
 
-var Insight = explorers.Insight;
 var InsightWs = explorers.InsightWs;
-var Address = bitcore.Address;
-var Transaction = bitcore.Transaction;
-var AddressInfo = explorers.models.AddressInfo;
 var Networks = bitcore.Networks;
 
 describe('InsightWs', function () {
@@ -95,10 +89,10 @@ describe('InsightWs', function () {
             insightWs.subscriptions.block.should.equal(false);
 
             insightWs = new InsightWs();
-            subscriptions= {tx: 'detailed'};
+            subscriptions= {tx: 'detailed' /*by default, block:'detailed'*/};
             insightWs.subscribe(subscriptions);
             insightWs.subscriptions.tx.should.equal('detailed');
-            insightWs.subscriptions.block.should.equal(false);
+            insightWs.subscriptions.block.should.equal('detailed');
 
             insightWs = new InsightWs();
             subscriptions = {block: true, tx: true};

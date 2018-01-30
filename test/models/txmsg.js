@@ -1,6 +1,7 @@
 'use strict';
 
-var should = require('chai').should();
+var chai = require('chai');
+chai.should();
 
 var explorers = require('../../');
 var TxMsg = explorers.models.TxMsg;
@@ -25,8 +26,8 @@ describe('TxMsg', function() {
             txMsg.txid.should.equal('afd071e16184ae983656338e0ed90c340ba7940ccdfb1613d2ae0a49f07cb167');
             txMsg.valueOut.should.equal(1.0994392);
             txMsg.vout.should.deep.equal([
-                { "muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP": 100000000 },
-                { "mx6swcM5ggkuoxTpSLMmNGkjhp32vpvMBR": 9943920 }
+                { 'muNLJGrzhPfVp84j1w3NayxDH49tWSBDbP': 100000000 },
+                { 'mx6swcM5ggkuoxTpSLMmNGkjhp32vpvMBR': 9943920 }
             ]);
             txMsg.isRBF.should.equal(false);
         });

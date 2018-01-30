@@ -1,6 +1,6 @@
 'use strict';
 
-var should = require('chai').should();
+require('chai').should();
 
 var explorers = require('../../');
 var BlockMsg = explorers.models.BlockMsg;
