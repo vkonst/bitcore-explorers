@@ -11,7 +11,7 @@
   },
   "coinbase_tx": {
     "txid": "38136c041ae066741dead9bf10498b739cba2f1bc039b2617e70fd6e4b017cc9",
-    "valueOut": 1.0998122,
+    "valueOut": 25,
     "vout": [],
     "isRBF": false
   }

@@ -2,6 +2,7 @@
 
 'use strict';
 
+require('chai').should();
 var sinon = require('sinon');
 var expect = require('chai').expect;
 var explorers = require('../');
@@ -15,12 +16,12 @@ describe('InsightWs socket tx events', function() {
     var serverUrl = 'http://localhost:3002';
 
     var sampleTxMsgsFromInsight = require('./models/sampleTxMsgsFromInsight');
-    var sampleTxFromInsight = require('./models/sampleTxFromInsight');
+    var sampleTxFromInsight = require('./models/sampleTxsFromInsight');
 
     before(function(done) {
         ioServer = io.listen(3002);
         done();
-    }); // before
+    });
 
     beforeEach(function(done) {
         insightWs = new InsightWs(serverUrl);
@@ -32,7 +33,7 @@ describe('InsightWs socket tx events', function() {
         insightWs.socket.on('connect', function() {
             done();
         });
-    }); // beforeEach
+    });
 
     afterEach(function (done) {
        if (insightWs.socket.connected) {
@@ -72,4 +73,4 @@ describe('InsightWs socket tx events', function() {
     });
 
     function emitEvent(event, info) { ioServer.emit(event, info); } // jshint ignore: line
-}); // describe
+});

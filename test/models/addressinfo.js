@@ -17,7 +17,7 @@ describe('AddressInfo', function() {
       AddressInfo.fromInsight(JSON.stringify(data)).should.deep.equal(addressInfo);
     });
 
-    it('parses correctly a sample response on Insight for address mmvP3mTe53qxHdPqXEvdu8WdC7GfQ2vmx5', function() {
+    it('parses correctly a sample response from Insight-API', function() {
       should.exist(addressInfo);
       addressInfo.address.toString().should.equal('mmvP3mTe53qxHdPqXEvdu8WdC7GfQ2vmx5');
       addressInfo.balance.should.equal(552461906422);

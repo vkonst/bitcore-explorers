@@ -18,7 +18,7 @@ describe('BlockInfo', function() {
             BlockInfo.fromInsight(JSON.stringify(data)).should.deep.equal(blockInfo);
         });
 
-        it('parses correctly a sample response from Insight', function() {
+        it('parses correctly a sample response from Insight-API', function() {
             should.exist(blockInfo);
             blockInfo.hash.should.equal('25c997224436e703d069986b0a63837447a137592d17a124e3b1a81117b49c57');
             blockInfo.previousblockhash.should.equal('423aa5b03f5165f8b23d3c3a61cd41672e6f4b46dddad548502bcb47903e3448');

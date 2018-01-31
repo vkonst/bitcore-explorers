@@ -22,7 +22,7 @@ describe('TxMsg', function() {
                 .should.deep.equal(txMsg);
         });
 
-        it('parses correctly a sample tx msg from Insight', function() {
+        it('parses correctly a sample \'tx\' msg from Insight-API', function() {
             txMsg.txid.should.equal('afd071e16184ae983656338e0ed90c340ba7940ccdfb1613d2ae0a49f07cb167');
             txMsg.valueOut.should.equal(1.0994392);
             txMsg.vout.should.deep.equal([
@@ -32,10 +32,10 @@ describe('TxMsg', function() {
             txMsg.isRBF.should.equal(false);
         });
 
-        it('parses correctly a sample coinbase tx msg from Insight', function() {
+        it('parses correctly a sample coinbase \'tx\' msg from Insight-API', function() {
             txMsg = TxMsg.fromInsight(data.coinbase_tx);
             txMsg.txid.should.equal('38136c041ae066741dead9bf10498b739cba2f1bc039b2617e70fd6e4b017cc9');
-            txMsg.valueOut.should.equal(1.0998122);
+            txMsg.valueOut.should.equal(25);
             txMsg.vout.should.deep.equal([]);
             txMsg.isRBF.should.equal(false);
         });
