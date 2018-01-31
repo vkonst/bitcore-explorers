@@ -16,8 +16,7 @@ describe('InsightWs \'block\' subscription', function() {
     var sampleBlockFromInsight = require('./models/sampleBlockFromInsight');
 
     beforeEach(function(done) {
-        ioServer = io.listen(3001);
-        done();
+        reInitIoServer(done);
     });
 
     beforeEach(function() {
@@ -29,7 +28,7 @@ describe('InsightWs \'block\' subscription', function() {
 
     afterEach(function(done) {
         if (insightWs.socket.connected) { insightWs.socket.disconnect(); }
-        ioServer.close(done);
+        done();
     });
 
     describe('with {"block": false} set', function() {
@@ -38,7 +37,7 @@ describe('InsightWs \'block\' subscription', function() {
             subscribe({block: false}, done);
         });
 
-        it('neigther listens to \'block\' events from Insight-API nor re-emits them', function(done) {
+        it('neither listens to \'block\' events from Insight-API nor re-emits them', function(done) {
             insightWs.events.on('block', function() {
                 done(new Error('unexpected \'block\' event'));
             });
@@ -50,7 +49,7 @@ describe('InsightWs \'block\' subscription', function() {
             emitInsightApiEvent('block', sampleBlockFromInsight.hash);
         });
 
-        it('neighet requests block info from Isight-API nor emits \'block:details\' event', function(done) {
+        it('neither requests block info from Insight-API nor emits \'block:details\' event', function(done) {
             insightWs.events.on('block:details', function() {
                 done(new Error('unexpected \'block:details\' event'));
             });
@@ -76,7 +75,7 @@ describe('InsightWs \'block\' subscription', function() {
             emitInsightApiEvent('block', sampleBlockFromInsight.hash);
         });
 
-        it('neighet requests block info from Isight-API nor emits \'block:details\' event', function(done) {
+        it('neither requests block info from Insight-API nor emits \'block:details\' event', function(done) {
             insightWs.events.on('block:details', function() {
                 done(new Error('unexpected \'block:details\' event'));
             });
@@ -102,7 +101,7 @@ describe('InsightWs \'block\' subscription', function() {
             emitInsightApiEvent('block', sampleBlockFromInsight.hash);
         });
 
-        it('requests block info from Isight-API and emits \'block:details\' event', function(done) {
+        it('requests block info from Insight-API and emits \'block:details\' event', function(done) {
             insightWs.events.on('block:details', function(newBlock) {
                 newBlock.hash.should.equal(sampleBlockFromInsight.hash);
                 newBlock.previousblockhash.should.equal(sampleBlockFromInsight.previousblockhash);
@@ -117,6 +116,18 @@ describe('InsightWs \'block\' subscription', function() {
     });
 
 /* jshint -W003 */
+    function reInitIoServer(done) {
+        if (ioServer) {
+            ioServer.close(function () {
+                ioServer = io.listen(3001);
+                done();
+            });
+        } else {
+            ioServer = io.listen(3001);
+            done();
+        }
+    }
+
     function subscribe(subscription, done) {
         insightWs.subscribe(subscription);
         insightWs.socket.on('connect', function() { done(); });

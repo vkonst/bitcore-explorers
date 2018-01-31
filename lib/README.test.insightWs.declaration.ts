@@ -1,6 +1,6 @@
 import * as InsightWs from './insightWs';
 
-const serverURL = 'http://127.0.0.1:8080'; // websocket server url
+const serverURL = 'http://127.0.0.1:8080'; // web socket server url
 const subscriptions = {
     block: true,
     tx: true

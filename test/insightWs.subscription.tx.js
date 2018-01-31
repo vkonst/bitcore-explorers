@@ -1,4 +1,4 @@
-/* global describe, it, before, beforeEach, afterEach */
+/* global describe, it, beforeEach, afterEach, setImmediate*/
 
 'use strict';
 
@@ -14,63 +14,140 @@ var InsightWs = explorers.InsightWs;
 describe('InsightWs socket tx events', function() {
     var insightWs, ioServer;
     var serverUrl = 'http://localhost:3002';
-
     var sampleTxMsgsFromInsight = require('./models/sampleTxMsgsFromInsight');
     var sampleTxFromInsight = require('./models/sampleTxsFromInsight');
 
-    before(function(done) {
-        ioServer = io.listen(3002);
-        done();
+    beforeEach(function(done) {
+        reInitIoServer(done);
     });
 
-    beforeEach(function(done) {
+    beforeEach(function() {
         insightWs = new InsightWs(serverUrl);
         insightWs.requestGet = sinon.stub();
         insightWs.requestGet.onFirstCall().callsArgWith(1, null, {statusCode: 200},
             JSON.stringify(sampleTxFromInsight));
-        var subscriptions = {block: false, tx : 'detailed'};
-        insightWs.subscribe(subscriptions);
-        insightWs.socket.on('connect', function() {
-            done();
+    });
+
+    afterEach(function(done) {
+        if (insightWs.socket.connected) { insightWs.socket.disconnect(); }
+        done();
+    });
+
+    describe('with {"tx": false} set', function () {
+
+        beforeEach(function(done) {
+            subscribe({tx: false}, done);
+        });
+
+        it('neither listens to \'tx\' events from Insight-API nor re-emits them', function(done) {
+            insightWs.events.on('tx', function() {
+                done(new Error('unexpected \'tx\' event'));
+            });
+            insightWs.socket.on('tx', function() {
+                var onlyThisOne = 1;
+                expect(insightWs.socket.listeners('tx').length).to.equal(onlyThisOne);
+                setImmediate(function(){ done(); });
+            });
+            emitInsightApiEvent('tx', sampleTxMsgsFromInsight.coinbase_tx);
+        });
+
+        it('neither requests tx info from Insight-API nor emits \'tx:details\' event', function(done) {
+            insightWs.events.on('tx:details', function() {
+                done(new Error('unexpected \'tx:details\' event'));
+            });
+            setImmediate(function() {
+                expect(insightWs.requestGet.notCalled);
+                done();
+            });
+            emitInsightApiEvent('tx', sampleTxMsgsFromInsight.coinbase_tx);
+        });
+
+    });
+
+    describe('with {"tx": true} set', function() {
+
+        beforeEach(function(done) {
+            subscribe({tx: true}, done);
+        });
+
+        it('listens to \'tx\' events from Insight-API and re-emits them (coinbase_tx)', function(done) {
+            insightWs.events.on('tx', function(newTxMsg) {
+                newTxMsg.txid.should.equal(sampleTxMsgsFromInsight.coinbase_tx.txid);
+                newTxMsg.isRBF.should.equal(sampleTxMsgsFromInsight.coinbase_tx.isRBF);
+                newTxMsg.valueOut.should.equal(sampleTxMsgsFromInsight.coinbase_tx.valueOut);
+                newTxMsg.vout.should.deep.equal(sampleTxMsgsFromInsight.coinbase_tx.vout);
+                done();
+            });
+            emitInsightApiEvent('tx', sampleTxMsgsFromInsight.coinbase_tx);
+        });
+
+        it('listens to \'tx\' events from Insight-API and re-emits them (non_coinbase_tx)', function(done) {
+            insightWs.events.on('tx', function(newTxMsg) {
+                newTxMsg.txid.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.txid);
+                newTxMsg.isRBF.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.isRBF);
+                newTxMsg.valueOut.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.valueOut);
+                newTxMsg.vout.should.deep.equal(sampleTxMsgsFromInsight.non_coinbase_tx.vout);
+                done();
+            });
+            emitInsightApiEvent('tx', sampleTxMsgsFromInsight.non_coinbase_tx);
+        });
+
+        it('neither requests tx info from Insight-API nor emits \'tx:details\' event', function(done) {
+            insightWs.events.on('tx:details', function() {
+                done(new Error('unexpected \'tx:details\' event'));
+            });
+            setImmediate(function() {
+                expect(insightWs.requestGet.notCalled);
+                done();
+            });
+            emitInsightApiEvent('tx', sampleTxMsgsFromInsight.coinbase_tx);
         });
     });
 
-    afterEach(function (done) {
-       if (insightWs.socket.connected) {
-           insightWs.socket.disconnect();
-       }
-       done();
-    });
+    describe('with {tx: "detailed"} set', function() {
 
-    it('can get new tx from web socket  (non_coinbase_tx)', function (done) {
-        insightWs.events.on('tx', function (txMsg) {
-            txMsg.txid.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.txid);
-            txMsg.valueOut.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.valueOut);
-            txMsg.isRBF.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.isRBF);
-            expect(txMsg.vout).to.deep.equal(sampleTxMsgsFromInsight.non_coinbase_tx.vout);
-            done();
+        beforeEach(function(done) {
+            subscribe({tx: 'detailed'}, done);
         });
-        emitEvent('tx', sampleTxMsgsFromInsight.non_coinbase_tx);
-    });
 
-    it('can get new tx from web socket  (coinbase_tx)', function (done) {
-        insightWs.events.on('tx', function (txMsg) {
-            txMsg.txid.should.equal(sampleTxMsgsFromInsight.coinbase_tx.txid);
-            txMsg.valueOut.should.equal(sampleTxMsgsFromInsight.coinbase_tx.valueOut);
-            txMsg.isRBF.should.equal(sampleTxMsgsFromInsight.coinbase_tx.isRBF);
-            expect(txMsg.vout).to.deep.equal(sampleTxMsgsFromInsight.coinbase_tx.vout);
-            done();
+        it('listens to \'tx\' events from Insight-API and re-emits them', function(done) {
+            insightWs.events.on('tx', function(newTxMsg) {
+                newTxMsg.txid.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.txid);
+                newTxMsg.isRBF.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.isRBF);
+                newTxMsg.valueOut.should.equal(sampleTxMsgsFromInsight.non_coinbase_tx.valueOut);
+                newTxMsg.vout.should.deep.equal(sampleTxMsgsFromInsight.non_coinbase_tx.vout);
+                done();
+            });
+            emitInsightApiEvent('tx', sampleTxMsgsFromInsight.non_coinbase_tx);
         });
-        emitEvent('tx', sampleTxMsgsFromInsight.coinbase_tx);
-    });
 
-    it('can get new tx details from HTTP API', function (done) {
-        insightWs.events.on('tx:details', function (txData) {
-            expect(txData).to.deep.equal(sampleTxFromInsight);
-            done();
+        it('requests block info from Insight-API and emits \'tx:details\' event', function(done) {
+            insightWs.events.on('tx:details', function(newTx) {
+                newTx.should.deep.equal(sampleTxFromInsight);
+                done();
+            });
+            emitInsightApiEvent('tx', sampleTxMsgsFromInsight.coinbase_tx);
         });
-        emitEvent('tx', sampleTxMsgsFromInsight.coinbase_tx);
     });
 
-    function emitEvent(event, info) { ioServer.emit(event, info); } // jshint ignore: line
+/* jshint -W003 */
+    function reInitIoServer(done) {
+        if (ioServer) {
+            ioServer.close(function () {
+                ioServer = io.listen(3002);
+                done();
+            });
+        } else {
+            ioServer = io.listen(3002);
+            done();
+        }
+    }
+
+    function subscribe(subscription, done) {
+        insightWs.subscribe(subscription);
+        insightWs.socket.on('connect', function() { done(); });
+    }
+    function emitInsightApiEvent(event, info) {
+        ioServer.emit(event, info);
+    }
 });
