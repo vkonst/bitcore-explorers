@@ -5,7 +5,7 @@
 require('chai').should();
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var explorers = require('../');
+var explorers = require('../index');
 var io = require('socket.io');
 
 var InsightWs = explorers.InsightWs;
@@ -13,7 +13,7 @@ var InsightWs = explorers.InsightWs;
 describe('InsightWs \'block\' subscription', function() {
     var insightWs, ioServer;
     var serverUrl = 'http://localhost:3001';
-    var sampleBlockFromInsight = require('./models/sampleBlockFromInsight');
+    var sampleBlockFromInsight = require('../test/models/sampleBlockFromInsight');
 
     beforeEach(function(done) {
         reInitIoServer(done);

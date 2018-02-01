@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "gulp test",
+    "testSocket": "gulp test:socket",
     "coverage": "gulp coverage"
   },
   "repository": {
@@ -34,6 +35,7 @@
     "browserify": "^8.1.1",
     "chai": "^2.0.0",
     "gulp": "^3.8.10",
+    "gulp-mocha": "^5.0.0",
     "sinon": "^1.12.2",
     "socket.io": "^2.0.4"
   },

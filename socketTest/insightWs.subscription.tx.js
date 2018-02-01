@@ -5,17 +5,17 @@
 require('chai').should();
 var sinon = require('sinon');
 var expect = require('chai').expect;
-var explorers = require('../');
+var explorers = require('../index');
 var io = require('socket.io');
 
 var InsightWs = explorers.InsightWs;
 
 
-describe('InsightWs socket tx events', function() {
+describe('InsightWs \'tx\' subscription', function() {
     var insightWs, ioServer;
     var serverUrl = 'http://localhost:3002';
-    var sampleTxMsgsFromInsight = require('./models/sampleTxMsgsFromInsight');
-    var sampleTxFromInsight = require('./models/sampleTxsFromInsight');
+    var sampleTxMsgsFromInsight = require('../test/models/sampleTxMsgsFromInsight');
+    var sampleTxFromInsight = require('../test/models/sampleTxsFromInsight');
 
     beforeEach(function(done) {
         reInitIoServer(done);
