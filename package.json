@@ -6,6 +6,7 @@
   "directories": {
     "test": "test"
   },
+  "types": "./lib/insightWs.d.ts",
   "scripts": {
     "test": "gulp test && gulp test:socket",
     "coverage": "gulp coverage"
